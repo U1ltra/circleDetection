@@ -33,7 +33,8 @@ def noise_removal():
     
 def dataset_generation(
     store_path: str,
-    num: int=1e4
+    num: int = 1e4,
+    noise_level = 0.5
 ) -> Dataset:
     """
     store_path: path to store the generated numpy array object for
@@ -46,7 +47,7 @@ def dataset_generation(
     Return a Dataset object ready to be wrapped by data loader
     """
     
-    img_gen = generate_examples()
+    img_gen = generate_examples(noise_level = noise_level)
 
     feat = []
     lab = []

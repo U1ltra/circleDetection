@@ -102,7 +102,7 @@ for epoch in range(epoch_num):
                 f"{'-'*50}\nSaving Best Model cnt={cnt_model}\nLoss: {best_val:.5f} -> {valid_loss:.5f}\n{'-'*50}",
                 fp
             )
-            torch.save(net.state_dict, f"./best_model{cnt_model}.pt")
+            torch.save(net.state_dict(), f"./best_model{cnt_model}.pt")
             best_val = valid_loss
             cnt_model+=1
     valid_losses.append(valid_loss / len(valid_loader))

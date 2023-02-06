@@ -1,10 +1,12 @@
 
+import os.path
 import torch
 import torch.nn as nn
 import numpy as np
 import matplotlib.pyplot as plt
 
 from model import Net
+from dataset import Dataset, dataset_generation
 from typing import BinaryIO, List, Tuple
 from circleGenerator import CircleParams
 
@@ -92,4 +94,46 @@ def draw_figure(
     plt.savefig("./loss_figure.pdf")
     plt.show()
 
+def print_metrics(test_res: tuple, noise_level: float) -> None:
+    """
+    test_res: a tuple that stores (test_loss, test_IOU)
+    noise_level: noise level of the test dataset used
 
+    Print the evaluation metrics for this test results
+    """
+    print(f"{'-'*50}")
+    print(f"Test on noise level = {noise_level}")
+    avg_loss = np.sum(test_res[0]) / len(test_res[0])
+    avg_iou = np.sum(test_res[1]) / len(test_res[1])
+    over_eighty = test_res[1] > 0.8
+    over_ninty = test_res[1] > 0.9
+
+    print(f"Average Test Loss {avg_loss}")
+    print(f"Average IOU {avg_iou}")
+    print(f"IOU over 80% {np.sum(over_eighty) / len(over_eighty)}")
+    print(f"IOU over 90% {np.sum(over_ninty) / len(over_ninty)}")
+    print(f"{'-'*50}")
+
+def new_test(
+    net: Net,
+    device: torch.device,
+    noise_level: float = 0.5
+) -> None:
+    """
+    net: CNN model to be evaluated
+    device: torch device object
+    noise_level: noise level to be used to generate the new test dataset
+
+    Run a new test on the given model be generating a new circle dataset using
+    the specified noise level
+    """
+    idx = int(10*noise_level)    
+    if os.path.isfile(f"./test_{idx}_feat.npy"):
+        test_feat = np.load(f"./test_{idx}_feat.npy")
+        test_lab = np.load(f"./test_{idx}_lab.npy")
+        test_data = Dataset(test_feat, test_lab)
+    else:
+        test_datasize = 1e3
+        test_data = dataset_generation(f"./test_{idx}", test_datasize, noise_level)
+    test_res = test_model(net, test_data, device)
+    print_metrics(test_res, noise_level)
