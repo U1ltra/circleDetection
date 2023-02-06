@@ -8,18 +8,15 @@ Table of Content
 
 [Overview](#overview)<br/>
 [Code Structure](#struct)<br/>
-[Through Process](#thought)<br/>
 [Development Process](#dev)<br/>
+[Training & Evaluation](#train_eval)<br/>
 [Futhre Improvements](#improve)<br/>
-[Video Demo](#video)<br/>
-[Simple Launch with Docker](#docker)<br/>
-<!-- [Problems Encountered](video) -->
+[Simple Launch](#pip)<br/>
 
 ------
 
 ## Overview<a id="overview"></a>
 This project implement a deep CNN to detect the location of a circle given a noisy image. The images are 100x100 (by default) and one channel, generated with the given starter codes. Below is the image demo for cirlce with or without noise. The task of this project is using the noise image to recover the circle's center (x,y) and its radius.
-<!-- start code -->
 <!-- my work -->
 My contribution is mainly composed of the following parts,
 - Built a compact python package for this circle detection task. Details are explained below.
@@ -27,13 +24,12 @@ My contribution is mainly composed of the following parts,
 <!-- final results -->
 Eventually, my best model reached **91.93% average IOU** on test dataset with 1000 data points, generated with 0.5 noise level. The **average test loss** on each point is **19.06**. And percentage of **IOU > 0.8** and **IOU > 0.9** are **93%** and **68.7%**, respectively.
 
-<img src="https://github.com/U1ltra/circleDetection/experiments/noise50//img/sample.png"  width="340" height="340">
-<img src="https://github.com/U1ltra/circleDetection/experiments/noise50//img/sample.png"  width="340" height="340">
+<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample.png"  width="340" height="340">
+<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample_noisy.png"  width="340" height="340">
 
 ## Code Structure<a id="struct"></a>
 This package is organized into the following structure.
-<!-- how the final code works and what are each components -->
-<!-- what's the design -->
+
     circleDetection
         |- experiments
         |- notebook
@@ -44,6 +40,7 @@ This package is organized into the following structure.
         |- README.py
         |- trainer.py
         |- util.py
+
 The *experiments* directory contains two selected trained models, original test data, and stored training as well as validaiton loss. This is intended for the user to reproduce the experiment results very quickly.
 
 The *circleGenerator.py* module contains most of the starter code. This is mainly used to define circles and support the generation of circle image dataset.
@@ -58,13 +55,7 @@ The *trainer.py* is the module for launching the training.
 
 The *util.py* defines a lot of useful helper functions used throughout other modules.
 
-## Through Process<a id="thought"></a>
-<!-- what did I do before starting this project -->
-<!-- Dataset analysis: dataset size -->
-
-
 ## Development Process<a id="dev"></a>
-<!-- what procedure I followed -->
 To get started, three datasets, train, valid, and test, are generated. In order to get a sense of how much data might be needed. I referred to the popular ImageNet dataset and comed up with the datasize setting in *trainer.py*.
 
 With dataset settled, the next step is data preprocessings. First, the data generated are converted into numpy ndarray features and numpy ndarray labels. Second, in order to fit into torch's data loader, I define a *Dataset* wrapper that will store the feature and label arrays and return them in pairs. One more thing to notice is that generally images have three channels. For the generated circle images, however, it only have one channel, since it is a 2-D numpy adarry. To apply CNN kernel on this 2-D image, I need to expend each image by one dimension to indicate that the image only have one channel.
@@ -88,13 +79,8 @@ train_datasize = 3*1e4
 valid_datasize = 1e3
 test_datasize = 1e3
 ```
-<!-- preprocessing -->
-<!-- Architecture -->
 
 ## Training & Evaluation<a id="train_eval"></a>
-<!-- Metrics -->
-<!-- Architecture & Hyperparameter Tunning -->
-<!-- Figure & Interative Evaluation -->
 With the best model (best validation loss) obtained from the training, I calculated the following evaluation results. I mainly inspect three metrics, Average IOU, rate of IOU > 0.8, and rate of IOU > 0.9. I not only evaluated the model on the test data generated together with training and validation data. I further test the model's generalization ability by testing the model on new test data with different random seed and noise level. The following three tables are the results.
 
 According to the result, the model generalizes better towards lower noise level data, while performs worse on higher noise level data. It is intuitively true that the model should do worse on more noisy data. However, one might expect better performance on less noisy data. I think the performance drop might come from the model's resistance to noise. Since in images with higher noist, the model would recognize a lot of signals to be noise. When inferencing on less noisy data, the model still try to be resistent to noise, while this time there are more signals than noise being omitted.
@@ -127,7 +113,6 @@ According to the result, the model generalizes better towards lower noise level 
 |IOU > 0.9|0.3|75.70%|
 
 ## Futhre Improvements<a id="improve"></a>
-<!-- what is the next possible point to improve -->
 This package can be further improved in several ways.
 1. Data Preprocessing <br/>
 I tried to use some signal processing techniques, such as gaussian filtering, mean filtering, median filtering, and sobel, to preprocess the images. However, the result does not seem to be useful at first glance. Thus, they are not incooporated into the current implementation. In low or median noise setting, as it turns out, CNN itself is strong enough to extract the information from the dataset. In the higher noise level, using some signal processing strategies to augment the data might be necessary.
@@ -138,10 +123,8 @@ Another possible way to make the data more learner friendly is to map the x, y a
 3. Architecture and Hyperparameter Tuning <br/>
 This is another aspect that could bring significant performance enhancement. In this project, I have not tune the architecture and hyperparameters too much. It is possible to use more fansy architectures, such as ResNet, VGG, and better hyperparameter set to further improve the preformance.
 
-## Video Demo<a id="video"></a>
-<!-- YouTube Video -->
 
-## Simple Launch with Docker<a id="docker"></a>
+## Simple Launch<a id="pip"></a>
 The following is a simple way to launch this package.
 ```
 # create conda env
