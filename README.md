@@ -24,8 +24,12 @@ My contribution is mainly composed of the following parts,
 <!-- final results -->
 Eventually, my best model reached **91.93% average IOU** on test dataset with 1000 data points, generated with 0.5 noise level. The **average test loss** on each point is **19.06**. And percentage of **IOU > 0.8** and **IOU > 0.9** are **93%** and **68.7%**, respectively.
 
-<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample.png"  width="340" height="340">
-<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample_noisy.png"  width="340" height="340">
+<p>
+<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample.png"  width="300" height="300" />
+</p>
+<p>
+<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample_noisy.png"  width="300" height="300" />
+</p>
 
 ## Code Structure<a id="struct"></a>
 This package is organized into the following structure.
