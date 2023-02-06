@@ -16,7 +16,7 @@ Table of Content
 ------
 
 ## Overview<a id="overview"></a>
-This project implement a deep CNN to detect the location of a circle given a noisy image. The images are 100x100 (by default) and one channel, generated with the given starter codes. Below is the image demo for cirlce with or without noise. The task of this project is using the noise image to recover the circle's center (x,y) and its radius.
+This project implement a deep CNN to detect the location of a circle given a noisy image. The images are 100x100 (by default) and one channel, generated with the given starter codes. The image demo for cirlce [with](https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample_noisy.png) or [without](https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample.png) noise. The task of this project is using the noise image to recover the circle's center (x,y) and its radius.
 <!-- my work -->
 My contribution is mainly composed of the following parts,
 - Built a compact python package for this circle detection task. Details are explained below.
@@ -24,12 +24,6 @@ My contribution is mainly composed of the following parts,
 <!-- final results -->
 Eventually, my best model reached **91.93% average IOU** on test dataset with 1000 data points, generated with 0.5 noise level. The **average test loss** on each point is **19.06**. And percentage of **IOU > 0.8** and **IOU > 0.9** are **93%** and **68.7%**, respectively.
 
-<p>
-<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample.png"  width="300" height="300" />
-</p>
-<p>
-<img src="https://github.com/U1ltra/circleDetection/tree/main/experiments/noise50/img/sample_noisy.png"  width="300" height="300" />
-</p>
 
 ## Code Structure<a id="struct"></a>
 This package is organized into the following structure.
